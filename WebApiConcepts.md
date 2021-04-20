@@ -61,5 +61,45 @@ It is like a webservice or WCF service but the exception is that it only support
     Choose Web API to build RESTful HTTP based services.
     Choose Web API if you are familiar with ASP.NET MVC.
     
+ ## TEST WEB API ##
+ 
+ Web api can be debugged and tested using fiddler, postman, swagger doc[open API spec].
+ 
+ https://www.tutorialsteacher.com/webapi/test-web-api
+    
+## Web API Filters ##
+
+Web API includes filters to add extra logic before or after action method executes. Filters can be used to provide cross-cutting features such as logging, exception handling, performance measurement, authentication and authorization.
+
+Filters are actually attributes that can be applied on the Web API controller or one or more action methods. Every filter attribute class must implement IFilter interface included in System.Web.Http.Filters namespace.
+
+## Dependency Injection concepts ##
+
+![principles-and-patterns](https://user-images.githubusercontent.com/74425320/115464705-19636000-a1f3-11eb-991f-5b64ab795adb.png)
+
+
+## Inversion of Control ##
+
+IoC is a design principle which recommends the inversion of different kinds of controls in object-oriented design to achieve loose coupling between application classes. In this case, control refers to any additional responsibilities a class has, other than its main responsibility, such as control over the flow of an application, or control over the dependent object creation and binding (Remember SRP - Single Responsibility Principle). If you want to do TDD (Test Driven Development), then you must use the IoC principle, without which TDD is not possible. Learn about IoC in detail in the next chapter.
+
+
+## Dependency Inversion Principle ##
+
+The DIP principle also helps in achieving loose coupling between classes. It is highly recommended to use DIP and IoC together in order to achieve loose coupling.
+
+DIP suggests that high-level modules should not depend on low level modules. Both should depend on abstraction.
+
+The DIP principle was invented by Robert Martin (a.k.a. Uncle Bob). He is a founder of the SOLID principles. Learn more about DIP in the DIP chapter.
+
+## Dependency Injection ##
+
+Dependency Injection (DI) is a design pattern which implements the IoC principle to invert the creation of dependent objects. We will learn about it in the DI chapter.
+
+
+## IoC Container ##
+
+The IoC container is a framework used to manage automatic dependency injection throughout the application, so that we as programmers do not need to put more time and effort into it. There are various IoC Containers for .NET, such as Unity, Ninject, StructureMap, Autofac, etc. 
+
+![ioc-steps](https://user-images.githubusercontent.com/74425320/115465187-d2299f00-a1f3-11eb-9e57-a6e9c60f9750.png)
 
 
