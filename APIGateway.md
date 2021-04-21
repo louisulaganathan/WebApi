@@ -85,6 +85,10 @@ GraphQL is a query language for APIs and a runtime for fulfilling those queries 
 ---------------------------
 GraphQL is a query language for your API, and a server-side runtime for executing queries using a type system you define for your data. GraphQL isn't tied to any specific database or storage engine and is instead backed by your existing code and data.
 
+While GraphQL is a query language, REST is an architectural style for designing web services. GraphQL focuses more on retrieving elements (though it supports more), whereas REST is used to give web services a structure.
+
+Originally developed as an open-source project by Facebook, GraphQL is now maintained by its growing community.
+
 A GraphQL service is created by defining types and fields on those types, then providing functions for each field on each type. For example, a GraphQL service that tells you who the logged in user is (me) as well as that user's name might look like this:
 
 type Query {
