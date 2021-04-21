@@ -103,3 +103,150 @@ The IoC container is a framework used to manage automatic dependency injection t
 ![ioc-steps](https://user-images.githubusercontent.com/74425320/115465187-d2299f00-a1f3-11eb-9e57-a6e9c60f9750.png)
 
 
+## Versioning ##
+
+Approaches:
+-----------
+
+    1.URI 
+    2.Query string
+    3.Request Header.  -> Good
+
+### URI Versioning ###
+
+```
+    [Route("api/V1/[controller]")]
+    public class CatalogController:ControllerBase
+    {
+        :
+        :
+    }
+    or
+    [ApiVersion("2.0")]
+    [Route("Api/Helloworld")
+    public class HelloWorld: controller
+    {
+    }
+    
+    
+    **WebAPIConfig.cs**
+    Register(HttpConfiguration config)
+    {
+        config.MapHttpAttributeRoutes();
+        config.MapHttpRoute(name:"Emp1",
+            RouteTemplate: "api/V1/Employee/{id}",
+            defaults: new { controller = "Employee1", id = RouteParam.Optional});
+        config.MapHttpRoute(name:"Emp2",
+            RouteTemplate: "api/V2/Employee/{id}",
+            defaults: new { controller = "Employee2", id = RouteParam.Optional});
+    }
+    
+```
+
+## ASP.NET CORE API versioning ##
+
+** Query String **
+
+Below config services code is required for querystring and url based versioning.
+```
+public void ConfigureServices( IServiceCollection services)
+{
+    services.UseMVC();
+    services.AddApiVersioning();
+}
+```
+```
+services.AddApiVersioning(config =>
+{
+  config.DefaultApiVersion = new ApiVersion(1, 0);
+  config.AssumeDefaultVersionWhenUnspecified = true;
+  config.ReportApiVersions = true;
+});
+```
+
+**Controller impln**
+
+```
+[Route("api/[controller]")]
+    [ApiController]
+    [ApiVersion("1.0")]
+    [ApiVersion("1.1")]
+    [ApiVersion("2.0")]
+    public class DefaultController : ControllerBase
+    {
+        string[] authors = new string[]
+        { "Joydip Kanjilal", "Steve Smith", "Anand John" };
+        [HttpGet]
+        public IEnumerable<string> Get()
+        {
+            return authors;
+        }
+    }
+    
+    //[ApiVersion("1.0", Deprecated = true)]
+    
+    //Below method will serve only uri /v2/id not v1/id
+    [HttpGet("{id}")]
+    [MapToApiVersion("2.0")]
+    public string Get(int id)
+    {
+       return authors[id];
+    }
+ ```
+ 
+ URL Pattern:
+ 
+ http://localhost:25718/api/default?api-version=1.0
+ 
+ 
+ 
+ ### URL Pattern ###
+ 
+ ```
+ [Route("api/v{version:apiVersion}/[controller]")]
+[ApiController]
+[ApiVersion("1.0")]
+[ApiVersion("1.1")]
+public class DefaultController : ControllerBase
+    {
+        string[] authors = new string[]
+        { "Joydip Kanjilal", "Steve Smith", "Stephen Jones" };
+        [HttpGet]
+        public IEnumerable<string> Get()
+        {
+            return authors;
+        }
+        [HttpGet("{id}")]
+        [MapToApiVersion("2.0")]
+        public string Get(int id)
+        {
+            return authors[id];
+        }
+    }
+    
+```
+
+** URL Pattern** 
+http://localhost:25718/api/v2.0/default/1
+http://localhost:25718/api/v1.0/default
+
+
+
+### Request Header ###
+
+```
+services.AddApiVersioning(config =>
+{
+   config.DefaultApiVersion = new ApiVersion(1, 0);
+   config.AssumeDefaultVersionWhenUnspecified = true;
+   config.ReportApiVersions = true;
+   config.ApiVersionReader = new HeaderApiVersionReader("api-version");
+});
+```
+
+http://localhost:25718/api/default/1
+
+
+
+
+
