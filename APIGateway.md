@@ -80,7 +80,50 @@ there are many other products in the market offering API Gateways features, such
 
 **GRAPHQL**
 
-GraphQL is the rising star of backend technologies. It replaces REST as an API design paradigm and is becoming the new standard for exposing the data and functionality of a web server
+GraphQL is a query language for APIs and a runtime for fulfilling those queries with your existing data. GraphQL provides a complete and understandable description of the data in your API, gives clients the power to ask for exactly what they need and nothing more, makes it easier to evolve APIs over time, and enables powerful developer tools
+**INTRODUCTION **
+---------------------------
+GraphQL is a query language for your API, and a server-side runtime for executing queries using a type system you define for your data. GraphQL isn't tied to any specific database or storage engine and is instead backed by your existing code and data.
+
+A GraphQL service is created by defining types and fields on those types, then providing functions for each field on each type. For example, a GraphQL service that tells you who the logged in user is (me) as well as that user's name might look like this:
+
+type Query {
+  me: User
+}
+ 
+type User {
+  id: ID
+  name: String
+}
+
+Along with functions for each field on each type:
+
+function Query_me(request) {
+  return request.auth.user;
+}
+ 
+function User_name(user) {
+  return user.getName();
+}
+
+After a GraphQL service is running (typically at a URL on a web service), it can receive GraphQL queries to validate and execute. The service first checks a query to ensure it only refers to the types and fields defined, and then runs the provided functions to produce a result.
+
+For example, the query:
+
+{
+  me {
+    name
+  }
+}
+
+Could produce the following JSON result:
+
+{
+  "me": {
+    "name": "Luke Skywalker"
+  }
+}
+------------------------------------------
 
 Big Picture (Architecture)
 
