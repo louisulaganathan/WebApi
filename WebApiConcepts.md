@@ -35,6 +35,16 @@ It is like a webservice or WCF service but the exception is that it only support
 |Web API 2 	|.NET Framework 4.5 	|ASP.NET MVC 5 	|VS 2012, 2013|
 |.Core Web API| .Net Core 3.1| ASP.NET Core 3.1|VS2017, VS2019|
 
+##WebApi 20 Features:##
+External Auth
+Attribute based routing
+OData support
+Cors Cross Origin Resource Sharing support
+Passing Complex types using newtonsoft Jarray arraylist
+
+HttpAuthenticationContext in OnAuthentication
+HttpActionContext in ActionExecuted
+
 ## ASP.NET Web API vs WCF ##
 |Web API 	|WCF|
 |---------|----|
@@ -245,6 +255,124 @@ services.AddApiVersioning(config =>
 ```
 
 http://localhost:25718/api/default/1
+
+
+##Exception Handling in WebAPI##
+
+HttpResponseException
+Exception Filters
+Registering Exception Filters
+HttpError
+
+HttpResponseException
+
+```
+public Product GetProduct(int id)
+{
+    Product item = repository.Get(id);
+    if (item == null)
+    {
+        throw new HttpResponseException(HttpStatusCode.NotFound);
+    }
+    return item;
+}
+
+public Product GetProduct(int id)
+{
+    Product item = repository.Get(id);
+    if (item == null)
+    {
+        var resp = new HttpResponseMessage(HttpStatusCode.NotFound)
+        {
+            Content = new StringContent(string.Format("No product with ID = {0}", id)),
+            ReasonPhrase = "Product ID Not Found"
+        };
+        throw new HttpResponseException(resp);
+    }
+    return item;
+}
+```
+
+##Exception Filters##
+An exception filter is executed when a controller method throws any unhandled exception that is not an HttpResponseException exception.
+
+```
+namespace ProductStore.Filters
+{
+    using System;
+    using System.Net;
+    using System.Net.Http;
+    using System.Web.Http.Filters;
+
+    public class NotImplExceptionFilterAttribute : ExceptionFilterAttribute 
+    {
+        public override void OnException(HttpActionExecutedContext context)
+        {
+            if (context.Exception is NotImplementedException)
+            {
+                context.Response = new HttpResponseMessage(HttpStatusCode.NotImplemented);
+            }
+        }
+    }
+}
+```
+Registering Exception Filters
+There are several ways to register a Web API exception filter:
+
+By action
+By controller
+Globally
+
+```
+public class ProductsController : ApiController
+{
+    [NotImplExceptionFilter]
+    public Contact GetContact(int id)
+    {
+        throw new NotImplementedException("This method is not implemented");
+    }
+}
+```
+```
+[NotImplExceptionFilter]
+public class ProductsController : ApiController
+{
+    // ...
+}
+```
+```
+GlobalConfiguration.Configuration.Filters.Add(
+    new ProductStore.NotImplExceptionFilterAttribute());
+```
+
+```
+public static class WebApiConfig
+{
+    public static void Register(HttpConfiguration config)
+    {
+        config.Filters.Add(new ProductStore.NotImplExceptionFilterAttribute());
+
+        // Other configuration code...
+    }
+}
+```
+##HttpError##
+The HttpError object provides a consistent way to return error information in the response body. The following example shows how to return HTTP status code 404 (Not Found) with an HttpError in the response body.
+```
+public HttpResponseMessage GetProduct(int id)
+{
+    Product item = repository.Get(id);
+    if (item == null)
+    {
+        var message = string.Format("Product with id = {0} not found", id);
+        return Request.CreateErrorResponse(HttpStatusCode.NotFound, message);
+    }
+    else
+    {
+        return Request.CreateResponse(HttpStatusCode.OK, item);
+    }
+}
+```
 
 
 
