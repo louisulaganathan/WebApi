@@ -35,7 +35,7 @@ It is like a webservice or WCF service but the exception is that it only support
 |Web API 2 	|.NET Framework 4.5 	|ASP.NET MVC 5 	|VS 2012, 2013|
 |.Core Web API| .Net Core 3.1| ASP.NET Core 3.1|VS2017, VS2019|
 
-##WebApi 20 Features:##
+## WebApi 20 Features:##
 External Auth
 Attribute based routing
 OData support
@@ -257,14 +257,14 @@ services.AddApiVersioning(config =>
 http://localhost:25718/api/default/1
 
 
-##Exception Handling in WebAPI##
+## Exception Handling in WebAPI ##
 
 HttpResponseException
 Exception Filters
 Registering Exception Filters
 HttpError
 
-HttpResponseException
+## HttpResponseException ##
 
 ```
 public Product GetProduct(int id)
@@ -293,7 +293,7 @@ public Product GetProduct(int id)
 }
 ```
 
-##Exception Filters##
+## Exception Filters ##
 An exception filter is executed when a controller method throws any unhandled exception that is not an HttpResponseException exception.
 
 ```
@@ -316,7 +316,7 @@ namespace ProductStore.Filters
     }
 }
 ```
-Registering Exception Filters
+## Registering Exception Filters ##
 There are several ways to register a Web API exception filter:
 
 By action
@@ -356,7 +356,7 @@ public static class WebApiConfig
     }
 }
 ```
-##HttpError##
+## HttpError ##
 The HttpError object provides a consistent way to return error information in the response body. The following example shows how to return HTTP status code 404 (Not Found) with an HttpError in the response body.
 ```
 public HttpResponseMessage GetProduct(int id)
